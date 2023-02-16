@@ -5,11 +5,11 @@ import { RemoveAuthentication } from "./remote-authentication";
 import { HttpPostClientSpy } from "data/test/mock-http-client";
 import { HttpStatusCode } from "data/protocols/http/http-response";
 
-import { mockAuthentication } from "domain/test/mock-authentication";
-import { InvalidCredentialsError } from "domain/errors/invalid-credentials-error";
+import { AccountModel } from "domain/models/account-model";
 import { UnexpectedError } from "domain/errors/unexpected-error";
 import { AuthenticationParams } from "domain/usecases/authentication";
-import { AccountModel } from "domain/models/account-model";
+import { mockAccountModel, mockAuthentication } from "domain/test/mock-account";
+import { InvalidCredentialsError } from "domain/errors/invalid-credentials-error";
 
 type SutTypes = {
   sut: RemoveAuthentication;
@@ -52,9 +52,9 @@ describe("RemoteAuthentication", () => {
       statusCode: HttpStatusCode.unauthorized,
     };
 
-    const response = await sut.auth(mockAuthentication());
+    const response = sut.auth(mockAuthentication());
 
-    expect(response).rejects.toThrow(new InvalidCredentialsError());
+    await expect(response).rejects.toThrow(new InvalidCredentialsError());
   });
 
   test("should throw UnexpectedError if HttpPostClient returns 400", async () => {
@@ -63,9 +63,9 @@ describe("RemoteAuthentication", () => {
       statusCode: HttpStatusCode.badRequest,
     };
 
-    const response = await sut.auth(mockAuthentication());
+    const response = sut.auth(mockAuthentication());
 
-    expect(response).rejects.toThrow(new UnexpectedError());
+    await expect(response).rejects.toThrow(new UnexpectedError());
   });
 
   test("should throw UnexpectedError if HttpPostClient returns 500", async () => {
@@ -74,9 +74,9 @@ describe("RemoteAuthentication", () => {
       statusCode: HttpStatusCode.serverError,
     };
 
-    const response = await sut.auth(mockAuthentication());
+    const response = sut.auth(mockAuthentication());
 
-    expect(response).rejects.toThrow(new UnexpectedError());
+    await expect(response).rejects.toThrow(new UnexpectedError());
   });
 
   test("should throw UnexpectedError if HttpPostClient returns 404", async () => {
@@ -85,8 +85,22 @@ describe("RemoteAuthentication", () => {
       statusCode: HttpStatusCode.notFound,
     };
 
-    const response = await sut.auth(mockAuthentication());
+    const response = sut.auth(mockAuthentication());
 
     expect(response).rejects.toThrow(new UnexpectedError());
+  });
+
+  test("should return an AccountModel if HttpPostClient returns 200", async () => {
+    const { httpPostClientSpy, sut } = makeSut();
+    const httpResult = mockAccountModel();
+
+    httpPostClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult,
+    };
+
+    const account = await sut.auth(mockAuthentication());
+
+    expect(account).toEqual(httpResult);
   });
 });
