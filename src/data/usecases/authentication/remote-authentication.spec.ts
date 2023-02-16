@@ -2,14 +2,13 @@ import { faker } from "@faker-js/faker";
 
 import { RemoveAuthentication } from "./remote-authentication";
 
-import { HttpPostClientSpy } from "data/test/mock-http-client";
-import { HttpStatusCode } from "data/protocols/http/http-response";
+import { HttpPostClientSpy } from "data/test";
+import { HttpStatusCode } from "data/protocols/http";
 
-import { AccountModel } from "domain/models/account-model";
-import { UnexpectedError } from "domain/errors/unexpected-error";
-import { AuthenticationParams } from "domain/usecases/authentication";
-import { mockAccountModel, mockAuthentication } from "domain/test/mock-account";
-import { InvalidCredentialsError } from "domain/errors/invalid-credentials-error";
+import { AccountModel } from "domain/models";
+import { AuthenticationParams } from "domain/usecases";
+import { mockAccountModel, mockAuthentication } from "domain/test";
+import { UnexpectedError, InvalidCredentialsError } from "domain/errors";
 
 type SutTypes = {
   sut: RemoveAuthentication;
