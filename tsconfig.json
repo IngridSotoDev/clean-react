@@ -13,11 +13,7 @@
     "rootDir":"src",
     "baseUrl": "src",
     "allowJs": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "noEmit": true
   },
   "include": [
     "src"
