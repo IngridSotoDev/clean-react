@@ -1,8 +1,8 @@
-import { HttpPostClient, HttpStatusCode } from "data/protocols/http";
+import { HttpPostClient, HttpStatusCode } from "@/data/protocols/http";
 
-import { AccountModel } from "domain/models";
-import { Authentication, AuthenticationParams } from "domain/usecases";
-import { UnexpectedError, InvalidCredentialsError } from "domain/errors";
+import { AccountModel } from "@/domain/models";
+import { Authentication, AuthenticationParams } from "@/domain/usecases";
+import { UnexpectedError, InvalidCredentialsError } from "@/domain/errors";
 
 export class RemoveAuthentication implements Authentication {
   constructor(

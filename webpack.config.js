@@ -39,7 +39,9 @@ module.exports = {
     ],
   },
   devServer: {
-    static: "./public",
+    static: {
+      directory: "./public",
+    },
     devMiddleware: {
       writeToDisk: true,
     },
@@ -47,7 +49,7 @@ module.exports = {
   },
   externals: {
     react: "React",
-    "react-dom": "ReactDom",
+    "react-dom": "ReactDOM",
   },
   plugins: [new CleanWebpackPlugin()],
 };
